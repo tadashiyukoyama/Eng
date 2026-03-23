@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "conversations": [
+    {
+      "id": "conv_1",
+      "createdAt": "2026-03-18T00:08:39.313Z",
+      "updatedAt": "2026-03-18T00:08:39.324Z",
+      "channel": "whatsapp",
+      "contactName": "Lead Continuidade",
+      "matchedClientId": "client_1",
+      "stage": "in_progress",
+      "lastInboundText": "Sou Lead Continuidade novamente e quero continuar o atendimento.",
+      "lastOutboundText": "Entendi. Encontrei o cliente Lead Continuidade no seu CRM e registrei esta entrada para continuidade do atendimento."
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "audit_1773792519315_h20cx4pe",
+      "createdAt": "2026-03-18T00:08:39.315Z",
+      "flow": "tenant-panel-conversation:handle",
+      "sessionId": "cps_a0780e4514339146b9c96e2c",
+      "tenantId": "tenant_0001",
+      "actorEmail": "leadclean-1773792519228@example.com",
+      "allowed": true,
+      "nextAction": "Atendimento registrado como novo lead para qualificação no CRM."
+    },
+    {
+      "id": "audit_1773792519325_l2w7v7na",
+      "createdAt": "2026-03-18T00:08:39.325Z",
+      "flow": "tenant-panel-conversation:handle",
+      "sessionId": "cps_a0780e4514339146b9c96e2c",
+      "tenantId": "tenant_0001",
+      "actorEmail": "leadclean-1773792519228@example.com",
+      "allowed": true,
+      "nextAction": "Atendimento vinculado a cliente existente do CRM."
+    }
+  ]
+}

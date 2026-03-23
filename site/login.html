@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login — Klaus OS</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="brand">
+        <div class="brand-mark">⚡</div>
+        <div><div>Klaus OS</div><small>IA operacional</small></div>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/cadastro">Cadastro</a>
+        <a href="/contato">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="auth-shell">
+    <section class="auth-card">
+      <div class="badge">Acesso do cliente</div>
+      <h1 style="font-size:42px; letter-spacing:-0.05em; margin:18px 0 12px;">Entrar na sua conta</h1>
+      <p class="small">Acesse seu portal, veja seu plano e acompanhe o status do seu acesso.</p>
+
+      <form class="form-grid" data-login-form style="margin-top:24px;">
+        <div class="field">
+          <label>E-mail</label>
+          <input type="email" name="email" required placeholder="voce@empresa.com" />
+        </div>
+        <div class="field">
+          <label>Senha</label>
+          <input type="password" name="password" required placeholder="Sua senha" />
+        </div>
+        <div class="notice" data-login-notice>Use a conta criada no próprio site público.</div>
+        <button class="btn btn-primary" type="submit">Entrar</button>
+      </form>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:18px;">
+        <a class="btn btn-secondary" href="/cadastro">Criar conta</a>
+        <a class="btn btn-dark" href="/">Voltar para o site</a>
+      </div>
+    </section>
+  </main>
+
+  <script src="/assets/js/app.js"></script>
+</body>
+</html>

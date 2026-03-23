@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "channels": [
+    {
+      "channel": "whatsapp",
+      "connected": false
+    },
+    {
+      "channel": "instagram",
+      "connected": false
+    },
+    {
+      "channel": "webchat",
+      "connected": false
+    },
+    {
+      "channel": "email",
+      "connected": false
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "channel": "whatsapp",
+      "direction": "inbound",
+      "text": "Olá, sou Lead Continuidade e quero saber mais sobre o serviço.",
+      "createdAt": "2026-03-18T00:08:39.303Z"
+    },
+    {
+      "id": "msg_2",
+      "channel": "whatsapp",
+      "direction": "outbound",
+      "text": "Entendi. Registrei Lead Continuidade como lead no CRM e vou manter a continuidade desse atendimento.",
+      "createdAt": "2026-03-18T00:08:39.311Z"
+    },
+    {
+      "id": "msg_3",
+      "channel": "whatsapp",
+      "direction": "inbound",
+      "text": "Sou Lead Continuidade novamente e quero continuar o atendimento.",
+      "createdAt": "2026-03-18T00:08:39.320Z"
+    },
+    {
+      "id": "msg_4",
+      "channel": "whatsapp",
+      "direction": "outbound",
+      "text": "Entendi. Encontrei o cliente Lead Continuidade no seu CRM e registrei esta entrada para continuidade do atendimento.",
+      "createdAt": "2026-03-18T00:08:39.323Z"
+    }
+  ]
+}

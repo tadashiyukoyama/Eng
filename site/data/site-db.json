@@ -1,0 +1,88 @@
+{
+  "users": [
+    {
+      "id": "user_1773715380110_98lxsi",
+      "name": "teste",
+      "email": "tadashiyukoyama@gmail.com",
+      "phone": "11975037750",
+      "company": "",
+      "password": "9Vterkc!",
+      "role": "customer",
+      "planId": null,
+      "accessGranted": false,
+      "createdAt": "2026-03-17T02:43:00.110Z",
+      "sessionToken": "sess_1773715380110_08hlue"
+    },
+    {
+      "id": "user_1773716636786_guvyy6",
+      "name": "teste",
+      "email": "tadashiyukoyama1@gmail.com",
+      "phone": "11975037750",
+      "company": "cesar",
+      "password": "cesar",
+      "role": "customer",
+      "planId": "starter",
+      "accessGranted": true,
+      "createdAt": "2026-03-17T03:03:56.786Z",
+      "sessionToken": null
+    }
+  ],
+  "orders": [
+    {
+      "id": "order_1773716636792_p3i796",
+      "userId": "user_1773716636786_guvyy6",
+      "planId": "starter",
+      "planName": "Klaus Starter",
+      "amount": 197,
+      "status": "paid_local_demo",
+      "createdAt": "2026-03-17T03:03:56.792Z",
+      "paymentMethod": "local_demo"
+    }
+  ],
+  "leads": [],
+  "settings": {
+    "siteName": "Klaus OS",
+    "brandName": "Klaus OS",
+    "supportPhone": "5511961240197",
+    "whatsappCta": "https://wa.me/5511961240197?text=Ol%C3%A1%20Klaus%2C%20quero%20entender%20como%20voc%C3%AA%20pode%20me%20ajudar.",
+    "currency": "BRL"
+  },
+  "plans": [
+    {
+      "id": "starter",
+      "name": "Klaus Starter",
+      "price": 197,
+      "description": "Plano de entrada para automação comercial e atendimento com IA.",
+      "features": [
+        "Landing pages com CTA para WhatsApp",
+        "Atendimento inicial com IA",
+        "Captação de leads",
+        "Portal básico do cliente"
+      ]
+    },
+    {
+      "id": "pro",
+      "name": "Klaus Pro",
+      "price": 697,
+      "description": "Operação comercial mais forte, automação de processos e implantação guiada.",
+      "features": [
+        "Fluxos personalizados",
+        "CRM e operação comercial",
+        "WhatsApp com IA",
+        "Implantação assistida"
+      ]
+    },
+    {
+      "id": "enterprise",
+      "name": "Klaus Enterprise",
+      "price": 3900,
+      "description": "Projetos mais complexos, vários apps, reservas, equipes e gerente de vendas com IA.",
+      "features": [
+        "Implantação premium",
+        "Apps sob medida",
+        "Operação com múltiplos fluxos",
+        "Arquitetura personalizada"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.vite/
+.bd/
+# runtime data
+bd/conversations/
+bd/templates/
+.wwebjs_auth/
+# env
+.env
+.env.local
+# logs
+*.log
+logs/

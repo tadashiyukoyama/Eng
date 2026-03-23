@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contato — Klaus OS</title>
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="brand">
+        <div class="brand-mark">⚡</div>
+        <div><div>Klaus OS</div><small>IA operacional</small></div>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/cadastro">Cadastro</a>
+        <a href="/login">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="section">
+    <div class="container grid-2">
+      <article class="legal-card">
+        <div class="badge">Contato comercial</div>
+        <h1>Fale com o Klaus</h1>
+        <p>Este site foi desenhado para transformar clique em conversa real. O canal principal de venda é o WhatsApp do Klaus, com triagem, qualificação e continuidade comercial.</p>
+        <div class="notice" style="margin-top:20px;">
+          <strong>WhatsApp principal:</strong><br>
+          +55 11 96124-0197
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:20px;">
+          <a class="btn btn-primary" href="https://wa.me/5511961240197?text=Ol%C3%A1%20Klaus%2C%20quero%20falar%20sobre%20uma%20solu%C3%A7%C3%A3o." target="_blank" rel="noreferrer">Abrir WhatsApp</a>
+          <a class="btn btn-secondary" href="/cadastro">Criar conta</a>
+        </div>
+      </article>
+      <article class="panel" style="padding:28px;">
+        <div class="section-head" style="margin-bottom:14px;">
+          <span class="badge">Formulário</span>
+          <h2 style="font-size:36px;">Envie sua demanda</h2>
+          <p>Se preferir, você pode deixar seus dados aqui e o pedido fica salvo no banco local do site.</p>
+        </div>
+        <form class="form-grid" data-lead-form>
+          <div class="field"><label>Nome</label><input name="name" required /></div>
+          <div class="field"><label>E-mail</label><input name="email" type="email" required /></div>
+          <div class="field"><label>Telefone</label><input name="phone" required /></div>
+          <div class="field"><label>Empresa</label><input name="company" /></div>
+          <div class="field"><label>Interesse</label><input name="interest" placeholder="Ex: WhatsApp com IA, reservas, vendas, implantação" /></div>
+          <div class="field"><label>Mensagem</label><textarea name="message"></textarea></div>
+          <div class="notice" data-lead-notice>Seu pedido será salvo no ambiente local do site.</div>
+          <button class="btn btn-primary" type="submit">Enviar</button>
+        </form>
+      </article>
+    </div>
+  </main>
+
+  <script src="/assets/js/app.js"></script>
+</body>
+</html>
