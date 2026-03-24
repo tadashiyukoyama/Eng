@@ -1,393 +1,180 @@
-# Klaus OS Local 3.0 — Documentação Atualizada
+# Klaus OS — Plataforma de Gestão Empresarial com IA
 
-## Visão geral
-Klaus OS Local 3.0 é um sistema local com painel React/Vite e backend Node/Express para operação comercial, CRM, agenda, orçamento, suporte e automação via WhatsApp.
+**Klaus OS** é uma plataforma completa de gestão empresarial integrada com inteligência artificial avançada. O sistema combina CRM, controle financeiro, orçamentos, agenda, geração de documentos, suporte técnico por IA e um assistente de voz bidirecional (Jarvis) alimentado pelo Google Gemini Live Audio.
 
-O app combina:
-- painel local e remoto
-- runtime MCP embutido
-- túnel ngrok embutido
-- Core IA via OpenAI Responses
-- Jarvis/Voice via Gemini no browser
-- WhatsApp com dois providers: QR/Web e Meta Cloud API
-- persistência local em JSON
+O projeto roda sobre a infraestrutura **Manus** (OAuth, banco de dados MySQL/TiDB, deploy automático) e utiliza uma stack moderna com React 19, Tailwind CSS 4, Express 4, tRPC 11 e Drizzle ORM.
 
-## Endereços base
-### Local
-- Painel: `http://localhost:5173`
-- API: `http://localhost:3001`
-- MCP: `http://localhost:3001/mcp`
+---
 
-### Remoto
-Quando o túnel está ativo:
-- Painel remoto: domínio ngrok configurado
-- MCP remoto: `/mcp`
-- Webhook Meta: `/api/whatsapp/meta/webhook`
+## Stack Tecnológica
 
-## Stack
-### Frontend
-- React
-- Vite
-- Tailwind/estilo utilitário
-- módulos renderizados por `App.tsx`
+| Camada | Tecnologia | Versão |
+| :--- | :--- | :--- |
+| Frontend | React + TypeScript | 19.2 / 5.9 |
+| Estilização | Tailwind CSS + shadcn/ui | 4.1 |
+| Roteamento (client) | Wouter | 3.3 |
+| Estado (server) | TanStack React Query | 5.90 |
+| RPC | tRPC | 11.6 |
+| Backend | Express | 4.21 |
+| ORM | Drizzle ORM | 0.44 |
+| Banco de Dados | MySQL (TiDB via Manus) | — |
+| Autenticação | Manus OAuth + JWT | — |
+| IA (LLM) | Manus Forge API (OpenAI-compatible) | — |
+| IA (Voz) | Google Gemini Live Audio | 2.5-flash |
+| Build | Vite + esbuild | 7.1 |
+| Testes | Vitest | 2.1 |
 
-### Backend
-- Node
-- Express
-- OpenAI SDK
-- whatsapp-web.js
-- PDFKit
-- Multer
-- ngrok
+---
 
-### IA
-- Core principal: OpenAI Responses
-- suporte: OpenAI Responses
-- voz/Jarvis: Gemini Live no browser
-- transcrição de áudio WhatsApp: Whisper
+## Estrutura do Projeto
 
-## Estrutura principal do projeto
-- `App.tsx`
-- `server.ts`
-- `mcpRuntime.js`
-- `ngrokRuntime.js`
-- `context/AppContext.tsx`
-- `services/`
-- `modules/`
-- `bd/db.json`
-- `bd/conversations/`
-- `bd/support_conversations/`
-- `bd/templates/`
-- `logs/`
+```
+klaus-os/
+├── client/                    # Frontend React
+│   ├── index.html             # HTML entry point
+│   ├── public/                # Arquivos estáticos (favicon, robots.txt)
+│   └── src/
+│       ├── App.tsx            # Rotas e layout principal
+│       ├── main.tsx           # Providers (tRPC, React Query, Theme)
+│       ├── index.css          # Tema dark premium (OKLCH) + utilitários
+│       ├── const.ts           # Constantes frontend (login URL)
+│       ├── lib/
+│       │   ├── trpc.ts        # Cliente tRPC tipado
+│       │   └── utils.ts       # Utilitário cn() para classes
+│       ├── pages/             # Páginas dos módulos
+│       │   ├── Dashboard.tsx  # Dashboard executivo + terminal IA
+│       │   ├── CRM.tsx        # Gestão de leads/clientes
+│       │   ├── Finance.tsx    # Controle financeiro
+│       │   ├── Budgets.tsx    # Orçamentos
+│       │   ├── Agenda.tsx     # Agenda de eventos
+│       │   ├── DocStudio.tsx  # Gerador de documentos
+│       │   ├── AIConfig.tsx   # Configuração de perfis IA
+│       │   ├── Support.tsx    # Chat de suporte IA
+│       │   ├── Jarvis.tsx     # Assistente voz Gemini Live
+│       │   ├── Home.tsx       # Redirect para Dashboard
+│       │   └── NotFound.tsx   # 404
+│       ├── components/
+│       │   ├── DashboardLayout.tsx  # Layout sidebar com 9 módulos
+│       │   ├── AIChatBox.tsx        # Componente de chat reutilizável
+│       │   ├── Map.tsx              # Google Maps (proxy Manus)
+│       │   └── ui/                  # shadcn/ui components (60+)
+│       ├── contexts/
+│       │   └── ThemeContext.tsx      # Provider de tema dark/light
+│       └── hooks/
+│           ├── useAuth.ts           # Hook de autenticação
+│           ├── useMobile.tsx        # Detecção de mobile
+│           └── usePersistFn.ts      # Ref estável para callbacks
+├── server/                    # Backend Express + tRPC
+│   ├── routers.ts             # TODOS os routers tRPC (430+ linhas)
+│   ├── db.ts                  # Helpers de banco de dados (30+ funções)
+│   ├── storage.ts             # Helpers S3 (storagePut, storageGet)
+│   ├── routers.test.ts        # Testes vitest dos routers
+│   ├── auth.logout.test.ts    # Teste de logout
+│   └── _core/                 # Framework Manus (NÃO EDITAR)
+│       ├── index.ts           # Entry point do servidor
+│       ├── env.ts             # Variáveis de ambiente tipadas
+│       ├── trpc.ts            # Setup tRPC (public/protected procedures)
+│       ├── context.ts         # Contexto de request (user, req, res)
+│       ├── oauth.ts           # Fluxo OAuth Manus
+│       ├── cookies.ts         # Gestão de cookies JWT
+│       ├── llm.ts             # Helper invokeLLM (OpenAI-compatible)
+│       ├── notification.ts    # notifyOwner()
+│       ├── imageGeneration.ts # generateImage()
+│       ├── voiceTranscription.ts # transcribeAudio() (Whisper)
+│       ├── map.ts             # Google Maps proxy
+│       ├── sdk.ts             # SDK interno Manus
+│       └── dataApi.ts         # Data API helper
+├── drizzle/                   # Schema e migrações
+│   ├── schema.ts              # Definição de TODAS as tabelas
+│   ├── relations.ts           # Relações entre tabelas
+│   ├── 0000_youthful_hemingway.sql  # Migração inicial (users)
+│   ├── 0001_nasty_scream.sql        # Migração das tabelas do Klaus OS
+│   └── meta/                  # Metadados do drizzle-kit
+├── shared/                    # Tipos e constantes compartilhados
+│   ├── const.ts               # COOKIE_NAME, timeouts, mensagens de erro
+│   └── types.ts               # Re-exporta tipos do schema
+├── docs/                      # Documentação técnica
+│   ├── ARCHITECTURE.md        # Arquitetura e fluxo de dados
+│   ├── API_REFERENCE.md       # Referência completa de endpoints tRPC
+│   ├── DATABASE.md            # Schema, tabelas, campos e relações
+│   ├── MODULES.md             # Descrição de cada módulo frontend
+│   ├── SETUP.md               # Como rodar, configurar e fazer deploy
+│   └── ENV_VARIABLES.md       # Todas as variáveis de ambiente
+├── package.json               # Dependências e scripts
+├── tsconfig.json              # Configuração TypeScript
+├── vite.config.ts             # Configuração Vite (build frontend)
+├── vitest.config.ts           # Configuração Vitest (testes)
+├── drizzle.config.ts          # Configuração Drizzle Kit
+├── components.json            # Configuração shadcn/ui
+└── todo.md                    # Tracking de features e bugs
+```
 
-## Módulos visíveis do painel
-Rótulos visíveis na sidebar:
-- Dashboard
-- Cérebro IA
-- Suporte IA
-- CRM Leads
-- Orçamentos
-- Financeiro
-- Doc Studio
-- Klaus Pocket
-- Jarvis
-- Runtime
+---
 
-Mapeamento técnico:
-- Dashboard → `modules/Dashboard`
-- Cérebro IA → `modules/IAConfig`
-- Suporte IA → `modules/SupportAI`
-- CRM Leads → `modules/Clients`
-- Orçamentos → `modules/Budgets`
-- Financeiro → `modules/Finance`
-- Doc Studio → `modules/Models`
-- Klaus Pocket → `modules/WhatsApp`
-- Jarvis → `modules/Voice`
-- Runtime → `modules/Runtime`
+## Scripts Disponíveis
 
-## Serviços do frontend
-### `services/runtimeBase.ts`
-Resolve a base da API:
-- usa `VITE_API_BASE_URL` se existir
-- em localhost aponta para `http://localhost:3001`
-- fora de localhost reaproveita a mesma origin
+| Comando | Descrição |
+| :--- | :--- |
+| `pnpm dev` | Inicia o servidor de desenvolvimento (hot reload) |
+| `pnpm build` | Build de produção (Vite + esbuild) |
+| `pnpm start` | Roda o build de produção |
+| `pnpm check` | Verifica erros TypeScript sem compilar |
+| `pnpm test` | Roda todos os testes Vitest |
+| `pnpm format` | Formata o código com Prettier |
+| `pnpm db:push` | Gera e aplica migrações do Drizzle |
 
-### `services/apiService.ts`
-Responsável por:
-- testar saúde do backend
-- buscar snapshot completo do sistema
-- sincronizar dados do frontend com o backend
+---
 
-Rotas usadas:
-- `GET /health`
-- `GET /api/system/data`
-- `POST /api/system/sync`
+## Módulos do Sistema
 
-### `services/coreService.ts`
-Canal simples para chamar o Core pelo painel:
-- `POST /api/ai/dispatch`
-- contexto: `channel=panel`, `from=panel:master`
+O Klaus OS possui **9 módulos funcionais** acessíveis via sidebar:
 
-### `services/geminiService.ts`
-Mantém o nome histórico, mas já opera o Core do Klaus pelo backend:
-- chama `POST /api/ai/dispatch`
-- suporte a instrução de sistema
-- reset de memória com `POST /api/system/clear-sessions`
+1. **Dashboard** — Métricas executivas (saldo, leads, orçamentos) + terminal de comandos IA
+2. **CRM** — Gestão de leads/clientes com filtros por empresa e status
+3. **Financeiro** — Transações (entrada/saída/a receber/a pagar) com saldo calculado
+4. **Orçamentos** — Criação manual e com IA, itens com cálculo automático
+5. **Agenda** — Eventos com cliente, endereço, notas, agrupados por data
+6. **Doc Studio** — Templates com variáveis dinâmicas `{{variavel}}` + gerador IA
+7. **Config IA** — Perfis de IA (prospecção, atendente, full, Jarvis) por empresa
+8. **Suporte IA** — Chat contextualizado sobre o sistema
+9. **Jarvis** — Assistente de voz bidirecional com Gemini Live Audio + visão por screen share
 
-## Banco local
-Arquivo principal:
-- `bd/db.json`
+---
 
-Coleções principais:
-- `clients`
-- `transactions`
-- `budgets`
-- `agenda`
-- `templates`
-- `companies`
-- `config`
-- `activeProfile`
+## Autenticação
 
-## Perfis de IA
-- `PROSPECTING_ALFA`
-- `PROSPECTING_CUSTOM`
-- `ATTENDANT`
-- `FULL` (interno)
+O sistema utiliza **Manus OAuth** com sessão por cookie JWT. Após login, o usuário recebe um cookie `app_session_id` assinado com `JWT_SECRET`. Todas as rotas tRPC (exceto `auth.me` e `auth.logout`) são protegidas via `protectedProcedure` que injeta `ctx.user` automaticamente.
 
-Prompts persistidos no banco:
-- `klausPrompt`
-- `prospectingAlfaPrompt`
-- `prospectingCustomPrompt`
-- `attendantPrompt`
+O primeiro usuário que faz login é automaticamente promovido a `admin`. Usuários subsequentes recebem role `user`.
 
-## WhatsApp
-## Providers suportados
-### QR/Web
-- usa `whatsapp-web.js`
-- QR code no painel
-- sessão local em `.wwebjs_auth`
-- texto, áudio e imagem
+---
 
-### Meta Cloud API
-- webhook HTTP
-- envio via Graph API
-- respostas interativas
-- áudio com transcrição
-- imagem com entrada multimodal
+## Documentação Detalhada
 
-## Regras operacionais do WhatsApp
-### Master
-Master é reconhecido por `CESAR_NUMBER`.
+Para informações completas sobre cada aspecto do sistema, consulte os documentos na pasta `docs/`:
 
-Pode:
-- aprovar orçamento
-- recusar orçamento
-- trocar perfil com `klaus, mude para ...`
-- usar ações internas dos botões operacionais
+| Documento | Conteúdo |
+| :--- | :--- |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Arquitetura, stack, fluxo de dados, decisões técnicas |
+| [API_REFERENCE.md](docs/API_REFERENCE.md) | Referência completa de todos os endpoints tRPC |
+| [DATABASE.md](docs/DATABASE.md) | Schema completo, tabelas, campos, tipos e relações |
+| [MODULES.md](docs/MODULES.md) | Descrição detalhada de cada módulo frontend |
+| [SETUP.md](docs/SETUP.md) | Como rodar, configurar e fazer deploy |
+| [ENV_VARIABLES.md](docs/ENV_VARIABLES.md) | Todas as variáveis de ambiente necessárias |
 
-### Cliente
-Cliente:
-- não recebe privilégios de Master
-- não deve acessar banco, painel ou comandos de dev
-- não recebe `add_budget`
-- deve ser conduzido para visita/orçamento sem compromisso
+---
 
-## Fluxo atual de visita/orçamento
-### Regra atual
-Quando cliente pede orçamento:
-- não gera orçamento
-- não usa `add_budget`
-- coleta:
-  - nome
-  - serviço
-  - data
-  - hora
-  - endereço
-- só então usa `add_event`
+## Status Atual
 
-### Efeito operacional
-Ao marcar visita:
-- cria evento real na agenda
-- salva telefone do contato
-- salva nome do cliente
-- salva endereço
-- salva observações
-- cria ou atualiza o cliente no CRM
-- envia aviso ao número dev com botões Meta
+| Componente | Status |
+| :--- | :--- |
+| TypeScript | 0 erros |
+| Testes | 9/9 passando |
+| Banco de dados | 10 tabelas ativas |
+| Deploy | Ativo em `klausos-bgsahmqv.manus.space` |
 
-### Estado do cliente criado/atualizado
-- telefone normalizado
-- empresa inferida pelo perfil/empresa ativa
-- status: `Interessado`
-- observações com data/hora/endereço
+---
 
-## Fluxo de orçamento aprovado
-### Regras duras
-- orçamento nasce `Pendente`
-- nunca vai ao cliente sem aprovação do Master
-- aprovação por WhatsApp com `APROVAR <id>`
-- recusa por WhatsApp com `RECUSAR <id>`
+## Licença
 
-### Ações de orçamento
-- criação via tool `add_budget` (restrita ao Master no fluxo atual)
-- PDF gerado no backend
-- envio ao cliente só após aprovação
-
-## Botões operacionais do aviso Meta
-O aviso enviado ao número dev usa botões com ações reais tratadas no backend:
-- `FALAR_CLIENTE_<telefone>`
-- `VER_CONVERSA_<telefone>`
-- `VER_ENDERECO_<telefone>`
-
-### Comportamento atual
-- Falar cliente → responde com telefone pronto para contato
-- Ver conversa → traz últimas mensagens salvas do contato
-- Ver endereço → traz endereço e data/hora da visita mais recente
-
-## Jarvis
-Módulo visual: `Jarvis`
-Arquivo: `modules/Voice/VoiceModule.tsx`
-
-Funções principais:
-- captura microfone
-- conecta em Gemini Live
-- transcrição de entrada e saída
-- compartilhamento de tela
-- envio de frames de tela para Gemini
-- logs frontend enviados para `POST /api/support/frontend-log`
-
-Dados de contexto usados no prompt do Jarvis:
-- clientes
-- transações
-- agenda
-- `config.klausPrompt`
-
-## Runtime
-Módulo visual: `Runtime`
-Arquivo: `modules/Runtime/RuntimeModule.tsx`
-
-Funções:
-- configurar MCP
-- configurar auth/token MCP
-- permitir ou bloquear comandos shell
-- ligar/desligar read-only
-- configurar ngrok
-- configurar proxy do painel
-- iniciar/parar túnel
-- exibir URLs locais e remotas
-
-## Klaus Pocket
-Módulo visual: `Klaus Pocket`
-Arquivo: `modules/WhatsApp/WhatsAppModule.tsx`
-
-Funções:
-- visualizar QR (provider web)
-- alternar provider `web` / `meta`
-- editar configuração Meta
-- exibir webhook montado
-- controlar start/stop/restart do WhatsApp
-- enviar mensagem direta de teste
-- ver logs de telemetria do WhatsApp
-
-## Orçamentos
-Módulo visual: `Orçamentos`
-Arquivo: `modules/Budgets/BudgetsModule.tsx`
-
-Funções:
-- filtrar por status
-- aprovar ou recusar pelo painel
-- baixar PDF
-- exportar backup JSON
-- transformar aprovado em transação a receber
-
-## Doc Studio
-Módulo visual: `Doc Studio`
-Função documental atual:
-- catálogo de documentos/modelos
-- base para templates enviados via WhatsApp
-- parte do ecossistema de geração e entrega de documentos
-
-## Rotas HTTP confirmadas
-### Saúde e sistema
-- `GET /health`
-- `GET /status`
-- `GET /api/system/data`
-- `POST /api/system/sync`
-- `POST /api/system/clear-sessions`
-- `GET /api/system/env`
-- `POST /api/system/update-env`
-- `GET /api/system/runtime-config`
-- `POST /api/system/runtime-config`
-
-### WhatsApp
-- `POST /api/whatsapp/send`
-- `GET /api/whatsapp/meta/config`
-- `POST /api/whatsapp/meta/config`
-- `GET /api/whatsapp/meta/webhook`
-- `POST /api/whatsapp/meta/webhook`
-- `POST /api/system/start-whatsapp`
-- `POST /api/system/stop-whatsapp`
-- `POST /api/system/restart-whatsapp`
-
-### Túnel
-- `GET /api/system/tunnel-status`
-- `POST /api/system/start-tunnel`
-- `POST /api/system/stop-tunnel`
-
-### IA e suporte
-- `POST /api/ai/dispatch`
-- `POST /api/support/chat`
-- `POST /api/support/frontend-log`
-- `GET /api/support/scan`
-- `POST /api/support/clear-session`
-
-### Templates e orçamento
-- `GET /api/templates/list`
-- `POST /api/templates/upload`
-- `GET /api/templates/:id/download`
-- `GET /api/budgets/:id/pdf`
-- `POST /api/budgets/decision`
-
-## Runtime MCP
-Endpoint:
-- `/mcp`
-
-Ferramentas expostas incluem:
-- `health.get`
-- `registry.get`
-- `state.get`
-- `state.reload`
-- `runtime.reload`
-- `fs.list`
-- `fs.read`
-- `fs.write`
-- `fs.patch`
-- `fs.mkdir`
-- `fs.delete`
-- `log.read`
-- `trace.list`
-- `db.read`
-- `db.write`
-- `config.get`
-- `config.patch`
-- `cmd.run`
-- `simulator.run`
-- `prompts.list`
-- `prompt.get`
-- `support.state`
-- `support.audit`
-- `support.scan`
-- `whatsapp.control`
-
-## Logs
-Arquivos principais:
-- `logs/klaus.log`
-- `logs/support.log`
-- `logs/mcp-runtime.log`
-- `logs/ngrok.log`
-
-## Documentação complementar
-- `APP_BLUEPRINT_2026-03-16.md`
-- `CURRENT_ARCHITECTURE_AND_MODULES_2026-03-16.md`
-- `WHATSAPP_META_SETUP.md`
-- `MCP_RUNTIME_SETUP.md`
-- `KLAUS_3.0_RELEASE.md`
-
-## Estado atual resumido
-O estado atual do app já suporta:
-- painel modular funcional
-- Core IA funcional
-- CRM básico
-- agenda operacional
-- visita/orçamento sem compromisso com endereço obrigatório
-- criação/atualização automática do cliente ao agendar visita
-- orçamento pendente com aprovação do Master
-- PDF de orçamento
-- WhatsApp Web e Meta no mesmo backend
-- Jarvis com voz e visão
-- Runtime MCP com túnel embutido
-
-## Próxima etapa recomendada
-- lembrete automático de 1 dia antes
-- ações mais profundas para os botões do aviso Meta
-- evolução visual premium do setor de orçamento e documentos
+Projeto privado. Todos os direitos reservados.

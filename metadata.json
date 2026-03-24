@@ -1,8 +1,0 @@
-{
-  "name": "Klaus OS - Modular Management System",
-  "description": "A high-end modular management platform inspired by the Klaus system architecture, featuring independent modules for AI configuration, CRM, Finance, and System Health monitoring, powered by Gemini 3 Flash.",
-  "requestFramePermissions": [
-    "camera",
-    "microphone"
-  ]
-}
