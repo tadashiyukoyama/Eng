@@ -99,6 +99,54 @@ describe("agenda.list", () => {
   });
 });
 
+// ─── CRM Avançado ─────────────────────────────────────────────────────────────
+
+describe("clients.updateStatus", () => {
+  it("throws UNAUTHORIZED when not authenticated", async () => {
+    const ctx = makeCtx({ user: null });
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.updateStatus({ id: 1, status: "active" })).rejects.toThrow();
+  });
+
+  it("validates status enum", async () => {
+    const ctx = makeCtx();
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.updateStatus({ id: 1, status: "invalid" as any })).rejects.toThrow();
+  });
+});
+
+describe("clients.financialSummary", () => {
+  it("throws UNAUTHORIZED when not authenticated", async () => {
+    const ctx = makeCtx({ user: null });
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.financialSummary(1)).rejects.toThrow();
+  });
+});
+
+describe("clients.transactions", () => {
+  it("throws UNAUTHORIZED when not authenticated", async () => {
+    const ctx = makeCtx({ user: null });
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.transactions(1)).rejects.toThrow();
+  });
+});
+
+describe("clients.budgets", () => {
+  it("throws UNAUTHORIZED when not authenticated", async () => {
+    const ctx = makeCtx({ user: null });
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.budgets(1)).rejects.toThrow();
+  });
+});
+
+describe("clients.events", () => {
+  it("throws UNAUTHORIZED when not authenticated", async () => {
+    const ctx = makeCtx({ user: null });
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.clients.events(1)).rejects.toThrow();
+  });
+});
+
 // ─── Support ──────────────────────────────────────────────────────────────────
 
 describe("support.chat", () => {

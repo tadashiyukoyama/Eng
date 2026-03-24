@@ -103,6 +103,11 @@ Cria uma nova empresa ou atualiza uma existente (se `id` for fornecido).
 | `clients.get` | query | protected | Busca um cliente por ID |
 | `clients.upsert` | mutation | protected | Cria ou atualiza um cliente |
 | `clients.delete` | mutation | protected | Remove um cliente por ID |
+| `clients.updateStatus` | mutation | protected | Atualiza o status de um cliente (usado pelo Kanban drag-and-drop) |
+| `clients.financialSummary` | query | protected | Resumo financeiro do cliente (recebido, gasto, saldo devedor) |
+| `clients.transactions` | query | protected | Lista transações vinculadas ao cliente |
+| `clients.budgets` | query | protected | Lista orçamentos vinculados ao cliente |
+| `clients.events` | query | protected | Lista eventos de agenda vinculados ao cliente |
 
 ### `clients.list`
 
@@ -163,6 +168,63 @@ Cria uma nova empresa ou atualiza uma existente (se `id` for fornecido).
 ```typescript
 // Input: number (client ID)
 // Output: void
+```
+
+### `clients.updateStatus`
+
+Atualiza o status de um cliente. Usado pelo Kanban quando o usuário arrasta um card entre colunas.
+
+```typescript
+// Input
+{
+  id: number;              // ID do cliente
+  status: "lead" | "prospect" | "active" | "inactive" | "lost";
+}
+// Output: void
+```
+
+### `clients.financialSummary`
+
+Retorna o resumo financeiro de um cliente específico, calculando totais a partir das transações vinculadas.
+
+```typescript
+// Input: number (client ID)
+// Output
+{
+  totalIncome: number;      // Total recebido do cliente
+  totalExpense: number;     // Total gasto com o cliente
+  totalReceivable: number;  // Total a receber (não pago)
+  totalPayable: number;     // Total a pagar (não pago)
+  balance: number;          // Saldo (income - expense)
+  owes: number;             // Quanto o cliente me deve (receivables não pagos)
+}
+```
+
+### `clients.transactions`
+
+Lista todas as transações vinculadas a um cliente específico.
+
+```typescript
+// Input: number (client ID)
+// Output: Transaction[] (filtrado por clientId, ordenado por createdAt desc)
+```
+
+### `clients.budgets`
+
+Lista todos os orçamentos vinculados a um cliente específico.
+
+```typescript
+// Input: number (client ID)
+// Output: Budget[] (filtrado por clientId, ordenado por createdAt desc)
+```
+
+### `clients.events`
+
+Lista todos os eventos de agenda vinculados a um cliente específico.
+
+```typescript
+// Input: number (client ID)
+// Output: AgendaEvent[] (filtrado por clientId, ordenado por startAt desc)
 ```
 
 ---

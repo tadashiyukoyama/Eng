@@ -54,11 +54,25 @@
 - [x] Fix: Query falha na tabela `transactions` — 5 tabelas faltavam no banco (companies, clients, transactions, doc_templates, support_logs) — criadas manualmente via SQL
 
 ## Fase 7: Documentação e GitHub
-- [ ] Criar README.md completo do projeto
-- [ ] Criar docs/ARCHITECTURE.md (arquitetura, stack, fluxo de dados)
-- [ ] Criar docs/API_REFERENCE.md (todas as rotas tRPC com inputs/outputs)
-- [ ] Criar docs/DATABASE.md (schema completo, tabelas, campos, relações)
-- [ ] Criar docs/MODULES.md (cada módulo frontend com funcionalidades)
-- [ ] Criar docs/SETUP.md (como rodar, configurar, deploy)
-- [ ] Criar docs/ENV_VARIABLES.md (todas as variáveis de ambiente)
-- [ ] Push completo para o repositório GitHub tadashiyukoyama/Eng
+- [x] Criar README.md completo do projeto
+- [x] Criar docs/ARCHITECTURE.md (arquitetura, stack, fluxo de dados)
+- [x] Criar docs/API_REFERENCE.md (todas as rotas tRPC com inputs/outputs)
+- [x] Criar docs/DATABASE.md (schema completo, tabelas, campos, relações)
+- [x] Criar docs/MODULES.md (cada módulo frontend com funcionalidades)
+- [x] Criar docs/SETUP.md (como rodar, configurar, deploy)
+- [x] Criar docs/ENV_VARIABLES.md (todas as variáveis de ambiente)
+- [x] Push completo para o repositório GitHub tadashiyukoyama/Eng
+
+## Fase 8: CRM Avançado
+- [x] Kanban arrastável com drag-and-drop por status (colunas: Lead, Prospect, Ativo, Inativo, Perdido)
+- [x] Toggle entre visualização Kanban e Lista
+- [x] Ficha do cliente com abas (Dados, Financeiro, Orçamentos, Agenda)
+- [x] Aba Financeiro: gastos, recebimentos, pagamentos agendados, saldo devedor
+- [x] Ações rápidas: adicionar gasto, agendar pagamento, registrar recebimento
+- [x] Backend: rota tRPC para financeiro do cliente (clientFinancialSummary)
+- [x] Backend: rota tRPC para listar transações por cliente
+- [x] Backend: rota tRPC para listar orçamentos por cliente
+- [x] Backend: rota tRPC para listar eventos por cliente
+- [x] Testes vitest para as novas rotas (15 testes passando)
+- [x] Documentação atualizada (MODULES.md + API_REFERENCE.md)
+- [x] Push para o repositório GitHub

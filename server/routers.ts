@@ -13,6 +13,7 @@ import {
   getDocTemplates, upsertDocTemplate, deleteDocTemplate,
   getAiProfiles, upsertAiProfile, deleteAiProfile,
   getSupportLogs, addSupportLog, clearSupportLogs,
+  getTransactionsByClient, getClientFinancialSummary, getBudgetsByClient, getAgendaEventsByClient, updateClientStatus,
 } from "./db";
 
 // ─── COMPANIES ────────────────────────────────────────────────────────────────
@@ -60,6 +61,21 @@ const clientsRouter = router({
     }))
     .mutation(({ input }) => upsertClient(input as any)),
   delete: protectedProcedure.input(z.number()).mutation(({ input }) => deleteClient(input)),
+  updateStatus: protectedProcedure
+    .input(z.object({ id: z.number(), status: z.enum(["lead", "prospect", "active", "inactive", "lost"]) }))
+    .mutation(({ input }) => updateClientStatus(input.id, input.status)),
+  financialSummary: protectedProcedure
+    .input(z.number())
+    .query(({ input }) => getClientFinancialSummary(input)),
+  transactions: protectedProcedure
+    .input(z.number())
+    .query(({ input }) => getTransactionsByClient(input)),
+  budgets: protectedProcedure
+    .input(z.number())
+    .query(({ input }) => getBudgetsByClient(input)),
+  events: protectedProcedure
+    .input(z.number())
+    .query(({ input }) => getAgendaEventsByClient(input)),
 });
 
 // ─── TRANSACTIONS (FINANCEIRO) ────────────────────────────────────────────────

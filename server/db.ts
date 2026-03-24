@@ -308,3 +308,50 @@ export async function clearSupportLogs(userId?: number) {
   if (userId) await db.delete(supportLogs).where(eq(supportLogs.userId, userId));
   else await db.delete(supportLogs);
 }
+
+// ─── CLIENT FINANCIAL (CRM AVANÇADO) ─────────────────────────────────────────
+export async function getTransactionsByClient(clientId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(transactions).where(eq(transactions.clientId, clientId)).orderBy(desc(transactions.createdAt));
+}
+
+export async function getClientFinancialSummary(clientId: number) {
+  const db = await getDb();
+  if (!db) return { totalIncome: 0, totalExpense: 0, totalReceivable: 0, totalPayable: 0, balance: 0, owes: 0 };
+  const rows = await db.select().from(transactions).where(eq(transactions.clientId, clientId));
+  let totalIncome = 0, totalExpense = 0, totalReceivable = 0, totalPayable = 0;
+  for (const t of rows) {
+    const amt = parseFloat(String(t.amount));
+    if (t.type === "income") totalIncome += amt;
+    else if (t.type === "expense") totalExpense += amt;
+    else if (t.type === "receivable" && !t.paid) totalReceivable += amt;
+    else if (t.type === "payable" && !t.paid) totalPayable += amt;
+  }
+  return {
+    totalIncome,
+    totalExpense,
+    totalReceivable,
+    totalPayable,
+    balance: totalIncome - totalExpense,
+    owes: totalReceivable, // quanto o cliente me deve (receivables não pagos)
+  };
+}
+
+export async function getBudgetsByClient(clientId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(budgets).where(eq(budgets.clientId, clientId)).orderBy(desc(budgets.createdAt));
+}
+
+export async function getAgendaEventsByClient(clientId: number) {
+  const db = await getDb();
+  if (!db) return [];
+  return db.select().from(agendaEvents).where(eq(agendaEvents.clientId, clientId)).orderBy(desc(agendaEvents.startAt));
+}
+
+export async function updateClientStatus(id: number, status: string) {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(clients).set({ status: status as any, updatedAt: new Date() }).where(eq(clients.id, id));
+}

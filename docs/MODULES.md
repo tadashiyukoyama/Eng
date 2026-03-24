@@ -49,22 +49,68 @@ O Dashboard é a tela principal do sistema, exibindo métricas executivas e um t
 
 **Arquivo:** `client/src/pages/CRM.tsx`
 
-Módulo completo de gestão de leads e clientes.
+Módulo completo de gestão de leads e clientes com Kanban arrastável e ficha financeira integrada.
 
 **Funcionalidades implementadas:**
-- Listagem de clientes com cards informativos
-- Filtro por empresa e por status (lead, prospect, active, inactive, lost)
-- Busca textual por nome
-- Dialog de criação/edição de cliente com todos os campos
-- Botão de deletar com confirmação
-- Badges coloridos por status
-- Exibição de tags, telefone, email, cidade, notas e origem
+
+### Visão Kanban (drag-and-drop)
+- Board com 5 colunas por status: Lead, Prospect, Ativo, Inativo, Perdido
+- Cards arrastáveis entre colunas com HTML5 Drag and Drop API nativa
+- Ao soltar o card em outra coluna, o status é atualizado automaticamente no banco via `clients.updateStatus`
+- Contadores por coluna
+- Botões de visualizar (abre ficha) e editar em cada card
+- Placeholder "Arraste clientes aqui" quando a coluna está vazia
+
+### Visão Lista
+- Cards informativos com badges coloridos por status
+- Exibição de telefone, email, cidade, notas e origem
+- Botões de editar e deletar
+- Clique no card abre a ficha detalhada
+
+### Toggle Kanban/Lista
+- Botões no header para alternar entre as duas visões
+
+### Ficha do Cliente (Dialog com Tabs)
+Ao clicar em um cliente, abre um dialog com 4 abas:
+
+**Aba Dados:** Telefone, email, cidade, origem, endereço, observações, data de cadastro.
+
+**Aba Financeiro:**
+- 3 cards de resumo: Total Recebido (verde), Total Gasto (vermelho), Me Deve (amarelo)
+- 4 botões de ação rápida: Registrar Recebimento, Registrar Gasto, A Receber, Agendar Pagamento
+- Histórico de transações do cliente com ícones coloridos por tipo
+- Botão "Marcar como pago" em transações pendentes
+- Cálculo automático do saldo devedor (quanto o cliente me deve)
+
+**Aba Orçamentos:** Lista de orçamentos vinculados ao cliente com status e valor.
+
+**Aba Agenda:** Lista de eventos vinculados ao cliente com status, data e endereço.
+
+### Filtros e Busca
+- Filtro por empresa (select)
+- Busca textual por nome ou telefone
+- Cards de contagem por status (clicáveis)
+
+### Dialog de Criação/Edição
+- Campos: nome, empresa, status, telefone, email, cidade, origem, endereço, observações
+
+### Dialog de Nova Transação (vinculada ao cliente)
+- Campos: descrição, valor, categoria, data de vencimento (para a receber/a pagar), notas
+- Tipo pré-selecionado conforme o botão clicado
 
 **Hooks tRPC utilizados:**
-- `trpc.clients.list.useQuery({ companyId, status, search })`
+- `trpc.clients.list.useQuery({ companyId, search })`
+- `trpc.clients.get.useQuery(clientId)`
 - `trpc.companies.list.useQuery()`
 - `trpc.clients.upsert.useMutation()`
 - `trpc.clients.delete.useMutation()`
+- `trpc.clients.updateStatus.useMutation()` — **NOVO:** atualiza status via drag-and-drop
+- `trpc.clients.financialSummary.useQuery(clientId)` — **NOVO:** resumo financeiro do cliente
+- `trpc.clients.transactions.useQuery(clientId)` — **NOVO:** transações do cliente
+- `trpc.clients.budgets.useQuery(clientId)` — **NOVO:** orçamentos do cliente
+- `trpc.clients.events.useQuery(clientId)` — **NOVO:** eventos do cliente
+- `trpc.transactions.upsert.useMutation()` — criar transação vinculada ao cliente
+- `trpc.transactions.markPaid.useMutation()` — marcar transação como paga
 
 ---
 
